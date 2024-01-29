@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +8,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.demo.ventas.repo.modelo.DetalleFactura;
-import com.example.demo.ventas.repo.modelo.Factura;
-import com.example.demo.ventas.service.IFacturaService;
+import com.example.demo.ventas.repo.modelo.Habitacion;
+import com.example.demo.ventas.repo.modelo.Hotel;
+import com.example.demo.ventas.service.IHabitacionService;
+import com.example.demo.ventas.service.IHotelService;
 
 @SpringBootApplication
 public class Pa2U3P5DbApplication implements CommandLineRunner {
 
 	@Autowired
-	private IFacturaService iFacturaService;
+	private IHabitacionService iHabitacionService;
+
+	@Autowired
+	private IHotelService iHotelService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pa2U3P5DbApplication.class, args);
@@ -27,65 +30,63 @@ public class Pa2U3P5DbApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
 
-		Factura fac = new Factura();
-		fac.setCedula("12345");
-		fac.setFecha(LocalDate.now());
-		fac.setNumero("0001-02569");
+		Hotel hote = new Hotel();
 
-		DetalleFactura det1 = new DetalleFactura();
-		det1.setCantidad(4);
-		det1.setCodigoBarras("1478");
-		det1.setFactura(fac);
-		det1.setNombreProducto("CocaCola");
+		hote.setDireccion("Dos Puentes");
+		hote.setNombre("Cielo");
 
-		DetalleFactura det2 = new DetalleFactura();
-		det2.setCantidad(2);
-		det2.setCodigoBarras("2589");
-		det2.setFactura(fac);
-		det2.setNombreProducto("Leche Vita");
+		Habitacion habi = new Habitacion();
 
-		List<DetalleFactura> detalle = new ArrayList<>();
+		List<Habitacion> habitaciones = new ArrayList<>();
 
-		detalle.add(det1);
-		detalle.add(det2);
+		habi.setClase("Premiun");
+		habi.setHotel(hote);
+		habi.setNumero("A1");
+		habitaciones.add(habi);
 
-		fac.setDetalleFacturas(detalle);
+		Habitacion habi2 = new Habitacion();
+		habi2.setClase("Popular");
+		habi2.setHotel(hote);
+		habi2.setNumero("A2");
+		habitaciones.add(habi2);
 
-		//this.iFacturaService.guardar(fac);
+		hote.setHabitaciones(habitaciones);
 
-		Factura consu1 = this.iFacturaService.buscarPorNumero("0001-02569");
-		System.err.println("Su facutura" + fac.getNumero());
-		System.out.println("\t" + consu1);
+		// this.iHotelService.ingresar(hote);
 
-		System.out.println(
-				"\n__________________________________________________ INNER JOIN __________________________________________________ ");
+		System.err.println("\t_________________Inner Join_____________");
 
-		List<Factura> lista = this.iFacturaService.buscarInnerJoin();
-		for (Factura f : lista) {
-			System.out.println(f);
+		List<Habitacion> lista = this.iHabitacionService.buscarHabitacionPorNumero("A2");
+
+		for (Habitacion h : lista) {
+			System.out.println(h);
 		}
 
-		System.out.println(
-				"\n__________________________________________________ RIGHT JOIN __________________________________________________ ");
-		List<Factura> lista1 = this.iFacturaService.buscarRightJoin();
-		for (Factura f : lista1) {
-			System.out.println(f);
+		System.err.println("\t\n_________________Right Join_________");
+
+		List<Habitacion> lista1 = this.iHabitacionService.buscarHabitacionPorClase("Normal");
+
+		for (Habitacion h1 : lista1) {
+			System.out.println(h1);
 		}
 
-		System.out.println(
-				"\n__________________________________________________ LEFT JOIN __________________________________________________ ");
-		List<Factura> lista2 = this.iFacturaService.buscarLeftJoin();
-		for (Factura f : lista2) {
-			System.out.println(f);
+		System.err.println("\t\n_________________Left Join________________");
+
+		List<Hotel> lista2 = this.iHotelService.buscarHabitacionPorDireccion("Quito");
+
+		for (Hotel ho : lista2) {
+			System.out.println(ho);
+			for (Habitacion h : ho.getHabitaciones()) {
+				System.out.println(h);
+			}
 		}
 
-		System.out.println(
-				"\n__________________________________________________ FULL JOIN __________________________________________________ ");
-		List<Factura> lista3 = this.iFacturaService.buscarLeftJoin();
-		for (Factura f : lista3) {
-			System.out.println(f);
-			for (DetalleFactura d : f.getDetalleFacturas()) {
-				System.out.println(d);
+		System.err.println("\t\n_________________Full Join_____________");
+		List<Hotel> lista3 = this.iHotelService.buscarHabitacionPorNombre("Risol");
+		for (Hotel ho : lista3) {
+			System.out.println(ho);
+			for (Habitacion h : ho.getHabitaciones()) {
+				System.out.println(h);
 			}
 		}
 
