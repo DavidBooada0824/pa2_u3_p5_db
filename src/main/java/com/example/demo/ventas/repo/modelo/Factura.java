@@ -17,31 +17,22 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "factura")
 public class Factura {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_factura")
 	@SequenceGenerator(name = "seq_factura", sequenceName = "seq_factura", allocationSize = 1)
-	@Column(name = "fac_")
+	@Column(name = "fact_id")
 	private Integer id;
-
-	@Column(name = "fac_numero")
+	@Column(name = "fact_numero")
 	private String numero;
-	@Column(name = "fac_fecha")
+	@Column(name = "fact_fecha")
 	private LocalDate fecha;
-	@Column(name = "fac_cedula")
+	@Column(name = "fact_cedula")
 	private String cedula;
 
 	@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<DetalleFactura> detalles;
+	private List<DetalleFactura> detalleFacturas;
 
-	public List<DetalleFactura> getDetalles() {
-		return detalles;
-	}
-
-	public void setDetalles(List<DetalleFactura> detalles) {
-		this.detalles = detalles;
-	}
-
+	// GET Y SET
 	public Integer getId() {
 		return id;
 	}
@@ -74,10 +65,18 @@ public class Factura {
 		this.cedula = cedula;
 	}
 
+	public List<DetalleFactura> getDetalleFacturas() {
+		return detalleFacturas;
+	}
+
+	public void setDetalleFacturas(List<DetalleFactura> detalleFacturas) {
+		this.detalleFacturas = detalleFacturas;
+	}
+
 	@Override
 	public String toString() {
-		return "Factura [id=" + id + ", numero=" + numero + ", fecha=" + fecha + ", cedula=" + cedula + ", detalles="
-				+ detalles + "]";
+		return "Factura [id=" + id + ", numero=" + numero + ", fecha=" + fecha + ", cedula=" + cedula
+				+ ", detalleFacturas=" + detalleFacturas + "]";
 	}
 
 }
