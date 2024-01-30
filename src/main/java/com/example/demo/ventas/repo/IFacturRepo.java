@@ -18,4 +18,10 @@ public interface IFacturRepo {
 
 	public List<Factura> seleccionarFullJoin();
 
+	// join where
+
+	public List<Factura> seleccionarFacturaWhereJoin();
+
+	public List<Factura> seleccionarFacturaFetchJoin();
+
 }

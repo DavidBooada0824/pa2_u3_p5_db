@@ -49,9 +49,9 @@ public class HotelRepoImpl implements IHotelRepo {
 		query.setParameter("direccion", direccion);
 		List<Hotel> lista = query.getResultList();
 
-		for (Hotel h : lista) {
-			h.getHabitaciones().size();
-		}
+//		for (Hotel h : lista) {
+//			h.getHabitaciones().size();
+//		}
 		return lista;
 	}
 
@@ -62,9 +62,9 @@ public class HotelRepoImpl implements IHotelRepo {
 				.createQuery("select h from Hotel h Full join h.habitaciones ha where h.nombre=:nombre ", Hotel.class);
 		query.setParameter("nombre", nombre);
 		List<Hotel> lista = query.getResultList();
-		for (Hotel h : lista) {
-			h.getHabitaciones().size();
-		}
+//		for (Hotel h : lista) {
+//			h.getHabitaciones().size();
+//		}
 		return lista;
 	}
 

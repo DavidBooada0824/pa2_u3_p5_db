@@ -50,4 +50,16 @@ public class FacturaServiceImpl implements IFacturaService {
 		return this.iFacturRepo.seleccionarFullJoin();
 	}
 
+	@Override
+	public List<Factura> buscarWhereJoin() {
+		// TODO Auto-generated method stub
+		return this.iFacturRepo.seleccionarFacturaWhereJoin();
+	}
+
+	@Override
+	public List<Factura> buscarFacturaFetchJoin() {
+		// TODO Auto-generated method stub
+		return this.iFacturRepo.seleccionarFacturaFetchJoin();
+	}
+
 }
