@@ -1,13 +1,16 @@
 package com.example.demo.ventas.repo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.ventas.repo.modelo.Factura;
+import com.example.demo.ventas.repo.modelo.dto.FacturaDTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -37,85 +40,51 @@ public class FacturaRepoImpl implements IFacturRepo {
 	}
 
 	@Override
-	public List<Factura> seleccionarInnerJoin() {
+	public int actualizarFecha(LocalDate fechaNueva, LocalDate fechaActual) {
+		// TODO Auto-generated method stub
 
-		// SQL: Select * From factura f inner join detalle factura d on
-		// f.fact_id=d.deta_id_factura
-		// JPQL: Select f From Factura f Inner Join f.detalleFactura d
+		Query myQuery = this.entityManager
+				.createQuery("UPDATE Factura f SET f.fecha = :fechaNueva WHERE f.fecha >= :fechaActual");
 
-		TypedQuery<Factura> myQuery = this.entityManager.createQuery("Select f From Factura f Join f.detalleFacturas d",
-				Factura.class);
-
-		List<Factura> lista = myQuery.getResultList();
-		for (Factura f : lista) {
-			f.getDetalleFacturas().size();
-		}
-
-		return lista;
-	}
-
-	@Override
-	public List<Factura> seleccionarRightJoin() {
-		TypedQuery<Factura> myQuery = this.entityManager
-				.createQuery("Select f From Factura f Right Join f.detalleFacturas d", Factura.class);
-
-		List<Factura> lista = myQuery.getResultList();
-		for (Factura f : lista) {
-			f.getDetalleFacturas().size();
-		}
-
-		return lista;
-	}
-
-	@Override
-	public List<Factura> seleccionarLeftJoin() {
-		TypedQuery<Factura> myQuery = this.entityManager
-				.createQuery("Select f From Factura f Left Join f.detalleFacturas d", Factura.class);
-
-		List<Factura> lista = myQuery.getResultList();
-		for (Factura f : lista) {
-			f.getDetalleFacturas().size();
-		}
-
-		return lista;
-	}
-
-	@Override
-	public List<Factura> seleccionarFullJoin() {
-		TypedQuery<Factura> myQuery = this.entityManager
-				.createQuery("Select f From Factura f full Join f.detalleFactura d", Factura.class);
-
-		List<Factura> lista = myQuery.getResultList();
-		for (Factura f : lista) {
-			f.getDetalleFacturas().size();
-		}
-
-		return lista;
-	}
-
-	@Override
-	public List<Factura> seleccionarFacturaWhereJoin() {
-		// SELECT f.* FROM factura f,detalle_factura d WHERE
-		// jpql SELECT f FROM Factura f, DetalleFactura d WHERE f.id d.factura
-
-		TypedQuery<Factura> myQuery = this.entityManager
-				.createQuery("SELECT f FROM Factura f, DetalleFactura d WHERE f = d.factura", Factura.class);
-
-		List<Factura> lista = myQuery.getResultList();
-		for (Factura f : lista) {
-			f.getDetalleFacturas().size();
-		}
-
-		return lista;
+		myQuery.setParameter("fechaNueva", fechaNueva);
+		myQuery.setParameter("fechaActual", fechaActual);
+		return myQuery.executeUpdate();
 
 	}
 
 	@Override
-	public List<Factura> seleccionarFacturaFetchJoin() {
+	public void actualizar(Factura factura) {
+		// TODO Auto-generated method stub
 
-		// SELECT f FROM Factura f JOIN FETCH f.detalleFacturas d
-		TypedQuery<Factura> myQuery = this.entityManager
-				.createQuery("SELECT f FROM Factura f JOIN FETCH  f.detalleFacturas d", Factura.class);
+	}
+
+	@Override
+	public void eliminar(Integer id) {
+		this.entityManager.remove(this.selecionar(id));
+
+	}
+
+	@Override
+	public int eliminarPorNumero(String numero) {
+		// TODO Auto-generated method stub
+		// JPQL DELETE FROM Factura f WHERE f.numero = :numero
+		Query myQuery = this.entityManager.createQuery("DELETE FROM Factura f WHERE f.numero = :numero");
+		myQuery.setParameter("numero", numero);
+		return myQuery.executeUpdate();
+
+	}
+
+	@Override
+	public Factura selecionar(Integer id) {
+		// TODO Auto-generated method stub
+		return this.entityManager.find(Factura.class, id);
+	}
+
+	@Override
+	public List<FacturaDTO> selecionarFacturasDTO() {
+		TypedQuery<FacturaDTO> myQuery = this.entityManager.createQuery(
+				"SELECT NEW com.example.demo.ventas.repo.modelo.dto.FacturaDTO(f.numero,f.fecha) FROM Factura f",
+				FacturaDTO.class);
 
 		return myQuery.getResultList();
 	}

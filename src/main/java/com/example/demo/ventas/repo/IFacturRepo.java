@@ -1,8 +1,10 @@
 package com.example.demo.ventas.repo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.ventas.repo.modelo.Factura;
+import com.example.demo.ventas.repo.modelo.dto.FacturaDTO;
 
 public interface IFacturRepo {
 
@@ -10,18 +12,16 @@ public interface IFacturRepo {
 
 	public void insertar(Factura factura);
 
-	public List<Factura> seleccionarInnerJoin();
+	public int actualizarFecha(LocalDate fechaNueva, LocalDate fechaActual);
 
-	public List<Factura> seleccionarRightJoin();
+	public void actualizar(Factura factura);
 
-	public List<Factura> seleccionarLeftJoin();
+	public void eliminar(Integer id);
 
-	public List<Factura> seleccionarFullJoin();
+	public int eliminarPorNumero(String numero);
 
-	// join where
+	public Factura selecionar(Integer id);
 
-	public List<Factura> seleccionarFacturaWhereJoin();
-
-	public List<Factura> seleccionarFacturaFetchJoin();
+	public List<FacturaDTO> selecionarFacturasDTO();
 
 }
