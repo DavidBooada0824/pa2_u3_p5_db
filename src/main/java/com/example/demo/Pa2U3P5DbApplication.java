@@ -37,6 +37,9 @@ public class Pa2U3P5DbApplication implements CommandLineRunner {
 		clie.setNombre("David");
 
 		this.iFacturaService.guardar(fac, clie);
+		System.out.println("Main : "+org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive());
+		
+		this.iFacturaService.prueba();
 
 	}
 

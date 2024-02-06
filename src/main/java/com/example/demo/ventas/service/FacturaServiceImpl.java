@@ -32,4 +32,14 @@ public class FacturaServiceImpl implements IFacturaService {
 
 	}
 
+	@Override
+	@Transactional(value = TxType.MANDATORY)
+	public void prueba() {
+		System.out.println("Este Metodo es de prueba");
+
+		System.out.println(
+				org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive());
+
+	}
+
 }

@@ -7,4 +7,5 @@ public interface IFacturaService {
 
 	public void guardar(Factura factura, Cliente cliente);
 
+	public void prueba();
 }
