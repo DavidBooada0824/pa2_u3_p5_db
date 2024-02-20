@@ -1,63 +1,74 @@
 package com.example.demo.funcional;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
+		System.out.println("********************Implemantaicon de Interfaces Funcionales mediante librerias JAVA");
 
-		// 1.Supplier
-		// Clases
-		System.err.println("------Supplier---\n");
+		System.err.println("1. Supplier");
+		Stream<String> lista = Stream.generate(() -> "1720030723" + "pais").limit(20);
+		lista.forEach(cadena -> System.out.println(cadena));
 
-		IPersonaSupplier<String> supplierClase = new PersonaSupplierImpl();
-		System.err.println("\t------Clases---");
-		System.out.println("\t" + supplierClase.getId() + "\n");
-		// lambdas
-		IPersonaSupplier<String> supplierlambda = () -> {
-			String cedula = "1720030723";
-			cedula = cedula + "canton";
-			return cedula;
+		System.err.println("2. Consume Java");
+		List<Integer> listaNumeros = Arrays.asList(1, 2, 3, 4, 5, 67, 8, 5, 4, 85, 74);
+		listaNumeros.forEach(numero -> {
+			System.out.println("se inserta");
+			System.out.println(numero);
+		});
 
-		};
-		System.err.println("\t\t------Lambdas---");
-		System.out.println("\t\t" + supplierlambda.getId() + "\n");
+		System.err.println("3. Predicate Java");
+		Stream<Integer> listaFiltrada = listaNumeros.stream().filter(numero -> numero >= 10);
+		listaFiltrada.forEach(numero -> System.out.println(numero));
 
-		IPersonaSupplier<String> supplierlambda2 = () -> "1720030723" + "Pais";
-		System.err.println("\t\t------Lambdas---");
-		System.out.println("\t\t" + supplierlambda2.getId() + "\n");
+		System.err.println("3. Funtion Java");
+		Stream<String> listaCambiada = listaNumeros.stream().map(numero -> {
+			numero = numero - 100 / 50;
+			return "Num: " + numero.toString();
+		});
 
-		IPersonaSupplier<Integer> supplierlambda3 = () -> {
-			Integer valor1 = Integer.valueOf(100);
-			valor1 = valor1 * Integer.valueOf(50) / Integer.valueOf(5);
-			return valor1;
-
-		};
-		System.err.println("\t\t------Lambdas---");
-		System.out.println("\t\t" + supplierlambda3.getId() + "\n");
-
-		// 2.Consumer
-		// Clases
-		System.err.println("------Consumer---\n");
-
-		IPersonaConsumer<String> consumerClase = new PersonaConsumerImpl();
-		System.out.println("Clases");
-		consumerClase.accept("\tProfesor");
+		listaCambiada.forEach(cadena -> System.out.println(cadena));
 		
-
-		System.out.println("\nLambdas");
-		IPersonaConsumer<String> consumerLamdba = (cadena) -> {
-			System.out.println("\nSe inserta");
-			System.out.println(cadena);
-		};
-		consumerLamdba.accept("Profesor");
-
-		// 2.Consumer
-
-		System.err.println("\n------Predicate---");
-		IPersonaPredicate<Integer> predicateLambda = numero -> numero.compareTo(7)==0;
-		System.out.println("\t\t"+predicateLambda.evaluar(Integer.valueOf(7)));
-	
+		Ciudadano ciu1 = new Ciudadano();
+		ciu1.setApellido("Boada");
+		ciu1.setProvincia("Pichincha");
+		ciu1.setNombre("David");
+		
+		Ciudadano ciu2 = new Ciudadano();
+		ciu2.setApellido("Boada");
+		ciu2.setProvincia("Pichincha");
+		ciu2.setNombre("Marlon");
+		
+		Ciudadano ciu3 = new Ciudadano();
+		ciu3.setApellido("Boada");
+		ciu3.setProvincia("Pichincha");
+		ciu3.setNombre("Clare");
+		
+		List<Ciudadano> listaCiudadano = Arrays.asList(ciu1,ciu2,ciu3);
+		Stream<Empleado> listaEmpleados =listaCiudadano.stream().map(ciudadano -> {
+			Empleado empl01 = new Empleado();
+			empl01.setNombreCompleto(ciudadano.getNombre() + " " + ciudadano.getApellido());
+			if (ciudadano.getProvincia().compareTo("pichincha") == 0) {
+				empl01.setPais("Ecuador");
+			}
+			return empl01;
+		});
+		listaEmpleados.forEach(empleado -> System.out.println(empleado));
+		
+		//5. Unary Operation
+		
+		System.out.println("----------------------------------  UNARY OPERATOR JAVA  ---------------------------------");
+		Stream<Integer> listaNumeros2 = listaNumeros.stream().map(numero -> {
+			numero = numero *100 / 50;
+			return numero;
+		});
+		listaNumeros2.forEach(cadena -> System.out.println(cadena));
+		
 	}
 
 }
