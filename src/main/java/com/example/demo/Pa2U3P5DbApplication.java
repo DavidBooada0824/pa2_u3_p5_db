@@ -1,6 +1,7 @@
 package com.example.demo;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.ventas.repo.modelo.Cliente;
-import com.example.demo.ventas.repo.modelo.Factura;
 import com.example.demo.ventas.service.IClienteService;
 import com.example.demo.ventas.service.IFacturaService;
 
@@ -27,20 +27,61 @@ public class Pa2U3P5DbApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Factura fac = new Factura();
+		System.out.println(
+				"\n------------------------------------------- HILOS -------------------------------------------");
+		System.out.println("Nombre HIlo: " + Thread.currentThread()
 
-		fac.setCedula("1720030723");
-		fac.setFecha(LocalDate.now());
-		fac.setNumero("fac01");
-		Cliente clie = new Cliente();
-		clie.setApellido("Boada");
-		clie.setNombre("David");
+				.getName());
+//		long tiempoInicial = System.currentTimeMillis();
+//		for (int i = 1; i <= 5; i++) {
+//			Cliente cliente = new Cliente();
+//			cliente.setApellido("B " + i);
+//			cliente.setNombre("C " + i);
+//			this.iClienteService.guardar(cliente);
+//		}
+//		long tiempoFinal = System.currentTimeMillis();
+//
+//		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
+//		System.out.println("Tiempo Transcurrido: " + tiempoTranscurrido);
 
-		this.iFacturaService.guardar(fac, clie);
-		System.out.println("Main : "+org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive());
-		
-		this.iFacturaService.prueba();
+		// Programacion Multihilo
+//		System.out.println("Nombre HIlo: " + Thread.currentThread()
+//
+//				.getName());
+//		List<Cliente> listaCliente = new ArrayList<>();
+//
+//		long tiempoInicial = System.currentTimeMillis();
+//		for (int i = 1; i <= 100; i++) {
+//			Cliente cliente = new Cliente();
+//			cliente.setApellido("CN " + i);
+//			cliente.setNombre("Ca " + i);
+//			listaCliente.add(cliente);
+//
+//		}
+//		listaCliente.stream().forEach(cliente -> this.iClienteService.guardar(cliente));
+//		long tiempoFinal = System.currentTimeMillis();
+//
+//		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
+//		System.out.println("Tiempo Transcurrido: " + tiempoTranscurrido);
+
+		System.out.println("Nombre HIlo: " + Thread.currentThread()
+
+				.getName());
+		List<Cliente> listaCliente = new ArrayList<>();
+
+		long tiempoInicial = System.currentTimeMillis();
+		for (int i = 1; i <= 100; i++) {
+			Cliente cliente = new Cliente();
+			cliente.setApellido("CN " + i);
+			cliente.setNombre("Ca " + i);
+			listaCliente.add(cliente);
+
+		}
+		listaCliente.parallelStream().forEach(cliente -> this.iClienteService.guardar(cliente));
+		long tiempoFinal = System.currentTimeMillis();
+
+		long tiempoTranscurrido = (tiempoFinal - tiempoInicial) / 1000;
+		System.out.println("Tiempo Transcurrido: " + tiempoTranscurrido);
 
 	}
-
 }
